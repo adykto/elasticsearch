@@ -119,8 +119,10 @@ abstract class Base {
         $isAbsolute = (is_array($path) ? $path[0][0] : $path[0]) === '/';
         $url = $isAbsolute ? '' : "/" . $this->index;
 
+        /* Check if path is absolute, otherwise we get double slash root (//index/type) */
         if ($path && is_array($path) && count($path) > 0)
-            $url .= "/" . implode("/", array_filter($path));
+            $url .= ($isAbsolute ? '': "/") . implode("/", array_filter($path));
+
         if (substr($url, -1) == "/")
             $url = substr($url, 0, -1);
         if (count($options) > 0)
